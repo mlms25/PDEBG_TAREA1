@@ -1,0 +1,63 @@
+---
+title: "Analisis Descriptivo"
+author: "Luisa Moscoso"
+date: "2023-02-19"
+output: flexdashboard::flex_dashboard
+---
+
+  Visualizaciones {data-icon="fa-signal"}
+=================================================
+  
+columna 1
+----------------------------------------------------
+### Población beneficiada por distrito
+```{r}
+  library(ggplot2)
+  datos <- read.csv2("C:\\Users\\B39574\\Documents\\PROYECTOS_INVERSION.csv")
+  datos_filtrados <- subset(datos, DISTRITO != "PACHACAMAC,CIENEGUILLA,VILLA MARIA DEL TRIUNFO")
+
+  
+  datos_suma <- aggregate(POBLACION_BENEFICIADA_SSP ~ DISTRITO, data = datos, sum)
+  ggplot(datos_suma, aes(x = DISTRITO, y = POBLACION_BENEFICIADA_SSP)) +
+    geom_bar(stat = "identity") +
+    labs(x = "Distrito", y = "Población beneficiada") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+columna 2
+----------------------------------------------------
+
+### Cantidad de proyectos por etapa de inversion
+```{r }
+library(ggplot2)
+datos <- read.csv2("C:\\Users\\B39574\\Documents\\PROYECTOS_INVERSION.csv")
+datos_tabla <- table(datos$ETAPA_INVERSION)
+
+# Crear un data.frame con los valores de la tabla
+datos_grafico <- data.frame(Etapa = names(datos_tabla), Cantidad = datos_tabla)
+
+
+# Crear el gráfico de barras
+ggplot(data = datos_grafico, aes(x = Etapa, y = Cantidad.Freq, fill = Etapa)) +
+  geom_bar(stat = "identity")+
+labs(x = "Etapa de inversión", y = "Cantidad de proyectos") +
+theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+
+```
+
+
+Tablas {data-icon="fa-table"}
+=================================================
+### Resumen de la variable: Poblacion beneficiada
+```{r}
+ library(ggplot2)
+  datos <- read.csv2("C:\\Users\\B39574\\Documents\\PROYECTOS_INVERSION.csv")
+  
+  tabla_estadisticas<- summary(datos$POBLACION_BENEFICIADA_SSP)
+show_col_types= FALSE
+tabla_estadisticas
+```
+
+
+
